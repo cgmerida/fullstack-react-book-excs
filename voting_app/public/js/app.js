@@ -1,89 +1,65 @@
-class ProductList extends React.Component {
-    state = {
-      products: [],
-    };
+const ProductList = () => {
+  const { useState, useEffect } = React;
 
-  componentDidMount() {
-    this.setState({products: Seed.products });
-  }
+  const [products, setProducts] = useState([]);
 
-  handleProductUpVote = (productId) => {
-    const nextProducts = this.state.products.map((product) => {
-      if (product.id === productId) {
-        return Object.assign({}, product, {
-          votes: product.votes + 1,
-        });
-      } else {
-        return product;
-      }
-    });
-    this.setState({
-      products: nextProducts,
-    });
-  }
+  useEffect(() => {
+    setProducts(Seed.products.sort((a, b) => b.votes - a.votes));
+  }, [])
 
-  render() {
-    const products = this.state.products.sort((a, b) => (
-      b.votes - a.votes
-    ));
-    const productComponents = products.map((product) => (
-      <Product
-      key={'product-' + product.id}
-      id={product.id}
-      title={product.title}
-      description={product.description}
-      url={product.url}
-      votes={product.votes}
-      submitterAvatarUrl={product.submitterAvatarUrl}
-      productImageUrl={product.productImageUrl}
-      onVote={this.handleProductUpVote}
-      />
-    ));
-    return (
-      <div className='ui unstackable items'>
-        {productComponents}
-      </div>
+  const handleProductUpVote = (productId) => {
+    let newProds = products.map((p) =>
+      p.id === productId ? (p.votes = p.votes + 1, p) : p
     );
-  }
-}
 
-class Product extends React.Component {
-  handleUpVote = () => (
-    this.props.onVote(this.props.id)
+    setProducts(newProds.sort((a, b) => b.votes - a.votes));
+  }
+
+  let tempProds = products.slice();
+
+  const productComponents = tempProds.map((p) =>
+    <Product key={p.id} product={p} onVote={handleProductUpVote} />
   );
 
-  render() {
-    return (
-      <div className='item'>
-        <div className='image'>
-          <img src={this.props.productImageUrl} />
+  return (
+    <div className='ui unstackable items'>
+      {productComponents}
+    </div>
+  )
+}
+
+
+const Product = ({ product, onVote }) => {
+  return (
+    <div className='item'>
+      <div className='image'>
+        <img src={product.productImageUrl} />
+      </div>
+      <div className='middle aligned content'>
+        <div className='header'>
+          <a onClick={() => onVote(product.id)}>
+            <i className='large caret up icon' />
+          </a>
+          {product.votes}
         </div>
-        <div className='middle aligned content'>
-          <div className='header'>
-            <a onClick={this.handleUpVote}>
-              <i className='large caret up icon' />
-            </a>
-            {this.props.votes}
-          </div>
-          <div className='description'>
-            <a href={this.props.url}>
-              {this.props.title}
-            </a>
-            <p>
-              {this.props.description}
-            </p>
-          </div>
-          <div className='extra'>
-            <span>Submitted by:</span>
-            <img
-              className='ui avatar image'
-              src={this.props.submitterAvatarUrl}
-            />
-          </div>
+        <div className='description'>
+          <a href={product.url}>
+            {product.title}
+          </a>
+          <p>
+            {product.description}
+          </p>
+        </div>
+        <div className='extra'>
+          <span>Submitted by:</span>
+          <img
+            className='ui avatar image'
+            src={product.submitterAvatarUrl}
+          />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 ReactDOM.render(

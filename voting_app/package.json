@@ -12,6 +12,6 @@
   "private": true,
   "devDependencies": {
     "concurrently": "2.2.0",
-    "live-server": "git://github.com/acco/live-server.git"
+    "live-server": "^1.2.1"
   }
 }
