@@ -34,7 +34,7 @@ describe('App', () => {
       fat_g: '22.0',
       carbohydrate_g: '32.0',
     };
-    const foods = [ food1, food2 ];
+    const foods = [food1, food2];
 
     beforeEach(() => {
       foods.forEach((food) => (
@@ -95,7 +95,7 @@ describe('App', () => {
       it('removes the food at idx from array', () => {
         expect(
           wrapper.state().selectedFoods
-        ).toEqual([ food2 ]);
+        ).toEqual([food2]);
       });
     });
   });
