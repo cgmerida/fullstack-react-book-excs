@@ -84,11 +84,11 @@ const deleteMessage = (id) => ({
   id
 });
 
-const addMessage = (text, threadId) => ({
+const addMessage = (text, threadId) => {({
   type: ADD_MESSAGE,
   text,
   threadId
-});
+})};
 
 const changeTab = (threadId) => ({
   type: CHANGE_TAB,
