@@ -11,3 +11,7 @@ body {
 #root {
   margin-top: 3em;
 }
+
+.clickable {
+  cursor: pointer;
+}
